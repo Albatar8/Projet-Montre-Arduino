@@ -1,2 +1,2 @@
 # Projet-Montre-Arduino
-Erwan Connors
+Projet de montre Arduino avec Erwan Connors
