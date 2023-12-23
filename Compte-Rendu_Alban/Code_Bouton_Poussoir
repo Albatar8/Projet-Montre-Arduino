@@ -1,0 +1,27 @@
+const int boutonPin = 2; // Broche à laquelle le bouton est connecté
+const int ledPin = 13;   // Broche à laquelle la LED est connectée
+
+int etatBouton;          // Variable pour stocker l'état du bouton
+int etatPrecedent = LOW;  // Variable pour stocker l'état précédent du bouton
+
+void setup() {
+  pinMode(boutonPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // Lecture de l'état actuel du bouton
+  etatBouton = digitalRead(boutonPin);
+
+  // Vérification si l'état du bouton a changé
+  if (etatBouton != etatPrecedent) {
+    // Si le bouton est enfoncé, inverser l'état de la LED
+    if (etatBouton == HIGH) {
+      digitalWrite(ledPin, !digitalRead(ledPin));
+    }
+    delay(50);  // Délai pour éviter les rebonds du bouton
+  }
+
+  // Mettre à jour l'état précédent du bouton
+  etatPrecedent = etatBouton;
+}
