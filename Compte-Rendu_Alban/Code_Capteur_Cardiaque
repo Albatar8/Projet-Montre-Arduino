@@ -1,0 +1,37 @@
+// Définir la broche à laquelle le Pulse Sensor est connecté
+//Code du capteaur cardiaque
+const int pulseSensorPin = 0; // La plupart du temps, il s'agit de la broche analogique 0 (A0)
+
+int seuil = 550; // Ajustez ce seuil selon vos besoins
+
+int signal;
+int pulsations;
+int pouls;
+
+void setup() {
+  Serial.begin(9600); // Initialisez la communication série
+}
+
+void loop() {
+  signal = analogRead(pulseSensorPin); // Lire la valeur analogique du Pulse Sensor
+
+  if (signal > seuil) {
+    // Détection d'une pulsation
+    pulsations++;
+  }
+
+  // Afficher la valeur du signal et le nombre de pulsations sur le moniteur série
+  Serial.print("Valeur du signal : ");
+  Serial.print(signal);
+  Serial.print(" | Nombre de pulsations : ");
+  Serial.println(pulsations);
+
+  // Calculer le pouls (fréquence cardiaque) chaque seconde
+  delay(1000);
+  pouls = pulsations * 60; // Convertir le nombre de pulsations en fréquence cardiaque par minute
+  Serial.print("Pouls : ");
+  Serial.println(pouls);
+
+  // Réinitialiser le compteur de pulsations chaque seconde
+  pulsations = 0;
+}
