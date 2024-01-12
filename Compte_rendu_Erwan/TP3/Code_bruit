@@ -1,0 +1,29 @@
+const int buzzerPin = 12; // Assurez-vous de connecter le buzzer à la broche appropriée
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+  Serial.begin(115200);
+}
+
+void loop() {
+  // Attendre une commande de l'utilisateur pour émettre un son
+  Serial.println("Appuyez sur 's' pour émettre un son.");
+  while (Serial.available() == 0) {
+    // Attente de la commande
+  }
+
+  // Lire la commande de l'utilisateur
+  char command = Serial.read();
+
+  // Vérifier si la commande est 's' pour émettre un son
+  if (command == 's') {
+    emitSound();
+  }
+}
+
+void emitSound() {
+  // Émettre un son en activant la broche PWM du buzzer
+  analogWrite(buzzerPin, 128); // Utilisez une valeur PWM appropriée pour le niveau sonore souhaité
+  delay(1000); // Émettre le son pendant 1 seconde (ajustez selon vos besoins)
+  analogWrite(buzzerPin, 0); // Désactiver le buzzer
+}
