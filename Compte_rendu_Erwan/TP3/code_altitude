@@ -1,0 +1,41 @@
+#include <Adafruit_GC9A01.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+
+#define SCREEN_WIDTH 240
+#define SCREEN_HEIGHT 240
+
+Adafruit_GC9A01 tft = Adafruit_GC9A01(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+void setup() {
+  Serial.begin(115200);
+
+  // Initialiser l'écran
+  if (!tft.begin()) {
+    Serial.println("Ecran non détecté. Vérifiez les connexions!");
+    while (1);
+  }
+
+  // Réglez la couleur de fond de l'écran (facultatif)
+  tft.fillScreen(tft.color565(0, 0, 0));
+
+  delay(1000); // Délai pour l'utilisateur voir l'écran avant d'afficher l'altitude
+}
+
+void loop() {
+  // Simuler une lecture de l'altitude (remplacez cela par votre propre logique)
+  float altitude = 1000.5;
+
+  // Effacer l'affichage précédent
+  tft.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2, tft.color565(0, 0, 0));
+
+  // Afficher l'altitude
+  tft.setTextSize(3);
+  tft.setTextColor(tft.color565(255, 255, 255));
+  tft.setCursor(40, 40);
+  tft.print("Altitude: ");
+  tft.print(altitude);
+  tft.print(" m");
+
+  delay(1000); // Rafraîchir toutes les secondes (ajustez selon vos besoins)
+}
