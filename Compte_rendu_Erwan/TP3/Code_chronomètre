@@ -1,0 +1,68 @@
+#include <Wire.h>
+#include <Adafruit_GC9A01.h>
+
+#define SCREEN_WIDTH 240
+#define SCREEN_HEIGHT 240
+
+Adafruit_GC9A01 tft = Adafruit_GC9A01(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+unsigned long startTime = 0;
+unsigned long elapsedTime = 0;
+boolean isRunning = false;
+
+void setup() {
+  Serial.begin(115200);
+
+  // Initialiser l'écran
+  if (!tft.begin()) {
+    Serial.println("Ecran non détecté. Vérifiez les connexions!");
+    while (1);
+  }
+
+  // Afficher le chronomètre initial
+  displayTime(elapsedTime);
+}
+
+void loop() {
+  // Si le chronomètre est en cours d'exécution, mettre à jour le temps écoulé
+  if (isRunning) {
+    elapsedTime = millis() - startTime;
+    displayTime(elapsedTime);
+  }
+
+  // Ajoutez ici votre logique pour démarrer/arrêter le chronomètre (par exemple, bouton poussoir, capteur, etc.)
+}
+
+void displayTime(unsigned long time) {
+  // Effacer l'affichage précédent
+  tft.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2, tft.color565(0, 0, 0));
+
+  // Afficher le temps écoulé
+  tft.setTextSize(3);
+  tft.setTextColor(tft.color565(255, 255, 255));
+  tft.setCursor(40, 40);
+  tft.print("Temps: ");
+
+  // Convertir les millisecondes en secondes, minutes et heures
+  unsigned long seconds = time / 1000;
+  unsigned long minutes = seconds / 60;
+  unsigned long hours = minutes / 60;
+
+  // Afficher le temps au format hh:mm:ss
+  tft.print(hours);
+  tft.print(':');
+
+  if (minutes < 10) {
+    tft.print('0');
+  }
+  tft.print(minutes % 60);
+  tft.print(':');
+
+  if (seconds < 10) {
+    tft.print('0');
+  }
+  tft.print(seconds % 60);
+
+  // Rafraîchir l'écran
+  tft.display();
+}
