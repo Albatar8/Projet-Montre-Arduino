@@ -1,0 +1,36 @@
+#include <Wire.h>
+#include <Adafruit_GC9A01.h>
+#include <TimeLib.h>
+
+const int buzzerPin = 12; // Assurez-vous de connecter le buzzer à la broche appropriée
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+  Serial.begin(115200);
+  while (!Serial) {
+    delay(1000);
+  }
+
+  // Initialiser le temps avec l'heure actuelle
+  setTime(12, 0, 0, 1, 1, 2022); // Mettez ici l'heure à laquelle vous souhaitez émettre le son
+}
+
+void loop() {
+  // Obtenir l'heure actuelle
+  int currentHour = hour();
+
+  // Vérifier si l'heure actuelle correspond à l'heure de déclenchement
+  if (currentHour == 12) { // Mettez ici l'heure à laquelle vous souhaitez émettre le son
+    emitSound();
+    delay(3600000); // Attendre 1 heure avant de vérifier à nouveau (ajustez selon vos besoins)
+  }
+
+  // Autres tâches du programme
+}
+
+void emitSound() {
+  // Émettre un son en activant la broche PWM du buzzer
+  analogWrite(buzzerPin, 128); // Utilisez une valeur PWM appropriée pour le niveau sonore souhaité
+  delay(1000); // Émettre le son pendant 1 seconde (ajustez selon vos besoins)
+  analogWrite(buzzerPin, 0); // Désactiver le buzzer
+}
